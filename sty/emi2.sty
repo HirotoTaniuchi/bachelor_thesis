@@ -1,0 +1,248 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                   emi.sty for ascii-platex2e
+%%	Usage :	\documentclass{jreport}
+%%		\usepackage{a4j}
+%%		\usepackage{fancybox,fancyheadings,emi}
+%%
+%%			changed by to46  1998.1.5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  ñdüÌgðìé
+%%         Usage:\fancyframe{Newname}{boxtype}
+%%                 boxtype comes from fancybox ,
+%%                        o  \shadowbox
+%%                        o  \doublebox
+%%                        o  \ovalbox   , \doubleoval
+%%                        o  \Ovalbox   , \doubleOval
+%%
+\newsavebox{\mybox}%
+\newlength{\mylength}%
+
+\newcommand{\fancyframe}[2]{%
+\newenvironment{#1}%
+  {\setlength{\fboxsep}{15pt}%
+   \setlength{\mylength}{\linewidth}%
+   \addtolength{\mylength}{-2\fboxsep}%
+   \addtolength{\mylength}{-2\fboxrule}%
+   \addtolength{\mylength}{-18pt}%	
+   \beginsbox{\mybox}%
+   \minipage{\mylength}%
+     \setlength{\abovedisplayskip}{0pt}%
+     \setlength{\belowdisplayskip}{0pt}%
+     }%
+   {\endminipage\endsbox
+      #2{\usebox{\mybox}}}}
+
+\fancyframe{Frametext}{\doublebox}
+%\fancyframe{Frametext}{\Ovalbox}
+\fancyframe{FrameOval}{\doubleOval}
+\fancyframe{FramesOval}{\Ovalbox}
+
+%%
+%%  Chapter Ì X^C ÏX ( gÅÍÝAÖ )
+%%
+\def\@makechapterhead#1{\noindent \begin{Frametext} \vspace*{40pt} { \parindent 0pt\raggedright
+ \ifnum \c@secnumdepth >\m@ne \Huge\bf \begin{center} \@chapapp{\thechapter} \end{center}\par
+ \vskip 20pt \fi \Huge \bf \begin{center} #1 \end{center}\par
+ \nobreak \vskip 50pt } \end{Frametext} \vspace{30pt} }
+
+%%
+%%  Chapter 1 -> æ1Í
+%%
+\renewcommand{\postchaptername}{}
+\def\@chapapp#1{æ#1Í}
+
+%%
+%%  Ql¶£
+%%
+\def\thebibliography#1{\chapter*{\begin{center}Ql¶£\end{center}\@mkboth
+ {Ql¶£}{Ql¶£}\addcontentsline{toc}{chapter}{Ql¶£}}\list
+ {[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+ \advance\leftmargin\labelsep
+ \usecounter{enumi}}
+\def\newblock{\hskip .11em plus .33em minus .07em}
+ \sloppy
+ \sfcode`\.=1000\relax}
+\let\endthebibliography=\endlist
+
+%%
+%%  ÍÔÈµÌChapter
+%%
+\def\miscchapter#1{\chapter*{\begin{center}#1\end{center}\@mkboth
+{#1}{#1}} \addcontentsline{toc}{chapter}{#1}}
+
+%%
+%%  wb_
+%%
+
+\pagestyle{fancyplain}
+\addtolength{\headwidth}{0.2\marginparsep}
+\addtolength{\headwidth}{0.2\marginparwidth}
+\setlength{\headrulewidth}{1pt}
+\lhead{\fancyplain{}{\bf\leftmark}}
+\rhead{\fancyplain{\bf -- \thepage\ --}{\bf -- \thepage\ --}}
+
+\cfoot{}
+
+%%
+%% ãs«
+%%
+\def\vart#1{\raisebox{0.5em}{%
+    \parbox[b]{0cm}{\hfuzz10pt\offinterlineskip #1}}}
+
+%%
+%% Figure,Table -> }A\
+%%
+\def\fnum@figure{} \thefigure}
+\def\fnum@table{\ \thetable}
+\def\p@figure{}}\def\p@table{\}
+\def\@captype{figure}
+
+\let\orgequation=\equation
+\def\equation{\orgequation \gdef\@currentlabel{®(\theequation)}}
+\let\orgeqn=\eqnarray
+\def\eqnarray{\orgeqn \gdef\@currentlabel{®(\theequation)}}
+%%
+%% Appendix -> t^
+%%             gÅÍÜ¸AÖ
+%%
+
+\def\appendix{\par
+ \setcounter{chapter}{0}
+ \setcounter{section}{0}
+ \def\@makechapterhead##1{\vspace*{50pt} { \parindent 0pt\raggedright
+  \ifnum \c@secnumdepth >\m@ne \Huge\bf \begin{center} \@chapapp{\thechapter} \end{center} \par
+  \vskip 20pt \fi \Huge \bf \begin{center}##1 \end{center}\par
+  \nobreak \vskip 40pt } }
+ \def\@chapapp{t^\ }
+ \def\thechapter{\Alph{chapter}}}
+
+%%
+%%
+%%
+
+\def\chaptermark#1{\markboth {{\ifnum \c@secnumdepth >\m@ne
+ \@chapapp{\thechapter} \ \fi #1}}{}}
+
+%%
+%% ÚÉænÍAt^A Æo·
+%%
+%
+%\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+% \refstepcounter{chapter}
+% \typeout{\@chapapp{\thechapter}}
+% \addcontentsline{toc}{chapter}{\protect
+% \numberline{\@chapapp{\thechapter}}#1 }\else
+% \addcontentsline{toc}{chapter}{#1}\fi
+% \chaptermark{#1}
+% \setcounter{footnote}{1}
+% \addtocontents{lof}{\protect\addvspace{10pt}}
+%\addtocontents{lot}{\protect\addvspace{10pt}} \if@twocolumn
+%\@topnewpage[\@makechapterhead{#2}] 
+% \else \@makechapterhead{#2}
+% \@afterheading \fi}
+%
+%\def\l@chapter#1#2{\pagebreak[3] 
+% \vskip 1.0em plus 1pt \@tempdima 3.8em \begingroup
+% \parindent \z@ \rightskip \@pnumwidth 
+% \parfillskip -\@pnumwidth 
+% \bf \leavevmode \advance\leftskip\@tempdima \hskip -\leftskip #1\nobreak\hfil
+%\nobreak\hbox to\@pnumwidth{\hss #2}\par
+% \endgroup}
+
+%%
+%%  è
+%%
+
+\newtheorem{theorem}{è}
+\newtheorem{corollary}{n}
+\newtheorem{definition}{è`}
+
+%%
+%%  ]¿e[u
+%%         Usage:\evaltable{a}{b}{c}
+%%              a --- caption for table
+%%              b --- before
+%%              c --- after
+%%
+
+\newcommand{\evaltable}[3]
+{
+\begin{table}[h]
+  \caption{#1}
+   \begin{center}
+    \leavevmode
+     \begin{tabular}{|c|c|} \hline
+            Ï·O & Ï·ã \\ \hline \hline
+       \begin{tabular}{l}
+          #2
+       \end{tabular} &
+       \begin{tabular}{l}
+          #3
+       \end{tabular}\\ \hline
+     \end{tabular}
+  \end{center}
+  \label{tab:#1}
+\end{table}
+}
+
+%%   Ï·Ép¢½[
+%%             Usage:\ruletable{a}{b}{c}
+%%                a --- rule
+%%                b --- before
+%%                c --- after
+\newcommand{\ruletable}[4]
+{
+\begin{table}[p]
+  \begin{center}
+    #1
+  \end{center}
+  \begin{quote}
+    #2
+  \end{quote}
+  \begin{center}
+    \leavevmode
+     \begin{tabular}{|c|c|} \hline
+            Ï·O & Ï·ã \\ \hline \hline
+      \begin{tabular}{l}
+        #3
+      \end{tabular} &
+      \begin{tabular}{l}
+        #4
+      \end{tabular} \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+}
+
+%%
+%%  áÌñ¦  (\newcounter{example} ªKv)
+%%
+\newcommand{\Ex}[2]
+{
+  \refstepcounter{example}
+  \label{#2}
+  \bigbreak \noindent
+  {\bf á \theexample : #1}
+  
+}
+
+%%
+%%   Usage
+%%
+\newcommand{\Usage}[1]
+{
+  {\bf Usage :} \underline{#1}
+}
+
+%%
+%%
+%%
+\newcommand{\rdots}[1]
+{
+  \hfill \hbox to #1{\dotfill}
+}
+\newcommand{\bm}[1]
+{
+  \mbox{\boldmath$#1$}
+}
